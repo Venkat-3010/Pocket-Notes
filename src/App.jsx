@@ -1,5 +1,5 @@
 import './App.css'
-//import StartPage from './components/startpage/StartPage'
+import StartPage from './components/startpage/StartPage'
 import SideBar from './components/sidebar/SideBar';
 import TogglePage from './components/togglepage/TogglePage';
 import {NotesContext} from './notescontext/UseNotesContext';
@@ -51,7 +51,7 @@ function App() {
     <NotesContext.Provider value={contextValue}>
         <div className='app'>
           <SideBar />
-          <TogglePage />
+          <StartPage />
         </div>
     </NotesContext.Provider>
   )
