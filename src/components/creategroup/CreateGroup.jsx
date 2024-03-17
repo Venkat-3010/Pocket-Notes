@@ -50,7 +50,7 @@ const CreateGroup = ({ popupClose, groupHeading, setGroupHeading }) => {
 
         return () => {
             document.removeEventListener("mousedown", clickOutsidePopup);
-        };
+        }
     }, [popupClose]);
 
   return (

@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setMobileView(Window.innerWidth < 750);
+      setMobileView(window.innerWidth < 750);
       if(window.innerWidth > 750){
         setHideSideBar(false);
       }

@@ -1,14 +1,31 @@
-import React from "react"
-import {useContext } from "react"
+import React from "react";
+import { useContext } from "react";
 
 const NotesContext = React.createContext({
-    selectedGrp: "",
-    setSelectedGrp: () => {},
-    hideSideBar: false,
-})
+  webNotes: [],
+  setWebNotes: () => {},
+  selectedGrp: "",
+  setSelectedGrp: () => {},
+});
 
-const UseNotesContext = () => {
-    return useContext(NotesContext);
+const NotesProvider = ({ children }) => {
+  const [webNotes, setWebNotes] = useState([]);
+  const [selectedGrp, setSelectedGrp] = useState("");
+
+  const value = {
+    webNotes,
+    setWebNotes,
+    selectedGrp,
+    setSelectedGrp,
+  };
+
+  return (
+    <NotesContext.Provider value={value}>{children}</NotesContext.Provider>
+  );
+};
+
+const useNotesContext = () => {
+  return useContext(NotesContext);
 }
 
-export {UseNotesContext, NotesContext};
+export { NotesProvider, NotesContext, useNotesContext };

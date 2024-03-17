@@ -27,14 +27,14 @@ const TogglePage = () => {
         const newSelectedGrp = grpNames.find((grp) => grp.name === selectedGrp);
         if(newSelectedGrp){
             setNewGrpColor(newSelectedGrp.color);
-            setHeadingLetters( newSelectedGrp.name
+            setHeadingLetters( newSelectedGrp.name[0]
                 .split(" ")
                 .map((word) => word.charAt(0))
                 .join(" ")
                 .toUpperCase()
             );
             setHeadingName( 
-                newSelectedGrp.name
+                newSelectedGrp.name[0]
                 .split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")
