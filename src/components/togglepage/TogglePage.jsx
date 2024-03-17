@@ -16,7 +16,7 @@ const TogglePage = () => {
         setWebNotes,
     } = useContext(NotesContext);
 
-    const [textNotes, setTextNotes] = useState([]);
+    const [textNotes, setTextNotes] = useState("");
     const [newgrpColor, setNewGrpColor] = useState("#ccc");
     const [headingLetters, setHeadingLetters] = useState("");
     const [headingName, setHeadingName] = useState("")
