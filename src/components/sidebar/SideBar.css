@@ -1,0 +1,76 @@
+.sb-container{
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 10;
+}
+
+.sb-title{
+    font-size: 1.5rem;
+    margin: 2rem 2rem 0 2rem;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.sb-notes-title{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 90vh;
+    scrollbar-width: 1px;
+}
+
+.sb-create-grp-btn{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: fixed;
+    left: 16%;
+    top: 80%;
+}
+
+.sb-create-grp-btn > button{
+    width: 50px;
+    height: 50px;
+    font-size: 3rem;
+    font-weight: 500;
+    border-radius: 50%;
+    border: none;
+    color: #ffffff;
+    background: #16008B;
+
+}
+
+.sb-popup{
+    position: fixed;
+    display: grid;
+    place-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.9;
+    z-index: 50;
+}
+
+
+
+@media (min-width: 750px) {
+    
+    .sb-container{
+        max-width: 325px;
+    }
+
+    .hidden{
+        display:none;
+    }
+
+    .sb-notes-title{
+        padding: 1rem;
+        margin-left: 1rem;
+        width: 310px;
+    }
+}
