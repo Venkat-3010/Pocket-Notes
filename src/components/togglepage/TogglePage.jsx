@@ -33,6 +33,7 @@ const TogglePage = () => {
         const storedGroups = JSON.parse(localStorage.getItem('grpNames'));
         const selectedGroup = storedGroups.find(group => group.name === selectedGrp);
         if (selectedGroup){
+            setNewGrpColor(selectedGroup.color);
             const nameWords = selectedGroup.name.split(' ')
             const initials = nameWords.map(word => word.charAt(0)).join('').toUpperCase();
             setHeadingLetters(initials);
