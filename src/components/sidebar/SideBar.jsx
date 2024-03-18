@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Heading from "../headings/Heading";
 import CreateGroup from "../creategroup/CreateGroup";
 import {NotesContext} from "../../notescontext/UseNotesContext";
@@ -6,7 +6,7 @@ import "./SideBar.css";
 
 function SideBar(){
 
-    const {hideSideBar} = useContext(NotesContext);
+    const {setSelectedGrp} = useContext(NotesContext);
 
     const [sbtitles, setSbTitles] = useState([]);
     const [expandPopup, setExpandPopup] = useState(false);
@@ -34,12 +34,20 @@ function SideBar(){
         setExpandPopup(false);
     };
 
+    const handleSidbarClick = (grpName) => {
+        setSelectedGrp(grpName);
+    }
+
     return (
-        <div className={`sb-container ${hideSideBar && "hidden"}`}>
+        <div className="sb-container">
             <div className="sb-title">Pocket Notes</div>
                 <div className="sb-notes-title">{
                     sbtitles.length > 0 ? (
-                        sbtitles.map((title, index) => <Heading key={index} title={title} />)
+                        sbtitles.map((title, index) => (
+                            <div key={index} onClick={() => handleSidbarClick(title[0].name)}>
+                                <Heading title={title} />
+                            </div>
+                            ))
                     ) : ( 
                         <div></div>
                     )

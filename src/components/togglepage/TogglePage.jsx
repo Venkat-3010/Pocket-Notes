@@ -8,12 +8,11 @@ import { NotesContext } from '../../notescontext/UseNotesContext'
 const TogglePage = () => {
 
     const {
-        hideSideBar,
-        setHideSideBar,
         mobileView,
         selectedGrp,
         webNotes,
         setWebNotes,
+        setSelectedGrp,
     } = useContext(NotesContext);
 
     const [textNotes, setTextNotes] = useState("");
@@ -22,54 +21,60 @@ const TogglePage = () => {
     const [headingName, setHeadingName] = useState("")
 
     useEffect(() => {
-        setTextNotes(JSON.parse(localStorage.getItem(selectedGrp)) || []);
-        const grpNames = JSON.parse(localStorage.getItem("grpNames"));
-        const newSelectedGrp = grpNames.find((grp) => grp.name === selectedGrp);
-        if(newSelectedGrp){
-            setNewGrpColor(newSelectedGrp.color);
-            setHeadingLetters( newSelectedGrp.name[0]
-                .split(" ")
-                .map((word) => word.charAt(0))
-                .join(" ")
-                .toUpperCase()
-            );
-            setHeadingName( 
-                newSelectedGrp.name[0]
-                .split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")
-            );
+        const storedNotes = localStorage.getItem(selectedGrp);
+        if(storedNotes){
+            setWebNotes(JSON.parse(storedNotes));
+        } else {
+            setWebNotes([]);
         }
-    }, [selectedGrp, webNotes]);
+    }, [selectedGrp, setWebNotes]);
+
+    useEffect(() => {
+        const storedGroups = JSON.parse(localStorage.getItem('grpNames'));
+        const selectedGroup = storedGroups.find(group => group.name === selectedGrp);
+        if (selectedGroup){
+            const nameWords = selectedGroup.name.split(' ')
+            const initials = nameWords.map(word => word.charAt(0)).join('').toUpperCase();
+            setHeadingLetters(initials);
+            setHeadingName(selectedGroup.name);
+        }
+    }, [selectedGrp]);
 
     const handleKeyDown = (e) => {
         if(e.key === "Enter"){
-            e.preventDefault();
             saveWebNote();
         }
     }
 
-    const saveWebNote = useCallback(() => {
+    const saveWebNote = () => {
+        if(textNotes.trim() === ''){
+            return;
+        }
+
+        const currenttime= new Date();
+        const formattedDate = `${currenttime.getDate()} ${getMonthName(currenttime.getMonth())} ${currenttime.getFullYear()}`;
+        const formattedTime = `${currenttime.getHours() % 12 || 12}:${currenttime.getMinutes().toString().padStart(2, '0')}${currenttime.getHours() >= 12? 'PM' : 'AM'}`;
         const newNote = {
             id: Date.now(),
             title: selectedGrp,
-            content: textNotes.trim(),
-            createDate: new Date().toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "numeric",
-                year: "numeric"
-            }),
-            createdTime: new Date().toLocaleTimeString(),    
+            content: textNotes,
+            date: formattedDate,
+            time: formattedTime,   
         };
 
-        const newNotes = [...webNotes, newNote]
-
-        localStorage.setItem(selectedGrp, JSON.stringify(newNotes));
-
+        setWebNotes([...webNotes, newNote]);
+        localStorage.setItem(selectedGrp, JSON.stringify([...webNotes, newNote]));
         setTextNotes("");
+    };
 
-        setWebNotes(newNotes);
-    }, [selectedGrp, textNotes, webNotes, setWebNotes]);
+    const getMonthName = (monthIndex) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return months[monthIndex];
+    }
+
+    const BackArrowClick = () => {
+        setSelectedGrp("");
+    }
     
     
     const handleChange = (e) => {
@@ -78,10 +83,10 @@ const TogglePage = () => {
 
 
   return (
-    <div className={`tp-container ${!hideSideBar && mobileView && "hidden"}`}>
+    <div className="tp-container">
         <div className='tp-title'>
             {mobileView && (
-                <div className="back-arrow" onClick={() => setHideSideBar(mobileView && false)}>
+                <div className="back-arrow" onClick={BackArrowClick}>
                     <img src={back} alt="back arrow" />
                 </div>
             )}

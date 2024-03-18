@@ -8,37 +8,22 @@ import { useEffect, useState } from 'react';
 function App() {
 
   const [selectedGrp, setSelectedGrp] = useState("");
-  const [hideSideBar, setHideSideBar] = useState(false);
   const [webNotes, setWebNotes] = useState([]);
   const [mobileView, setMobileView] = useState(window.innerWidth < 750);
 
   useEffect(() => {
-    const handleWindowResize = () => {
+    const ResizeWindow = () => {
       setMobileView(window.innerWidth < 750);
-      if(window.innerWidth > 750){
-        setHideSideBar(false);
-      }
     };
 
-    const handleEscapeKey = (e) => {
-      if(e.key === "Escape"){
-        setHideSideBar(true);
-      }
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-    window.addEventListener("keydown", handleEscapeKey);
+    window.addEventListener("resize", ResizeWindow);
 
     return() => {
-      window.removeEventListener("resize", handleWindowResize);
-      window.removeEventListener("keydown", handleEscapeKey);
+      window.removeEventListener("resize", ResizeWindow);
     };
   }, []);
 
-
   const contextValue ={
-    hideSideBar: hideSideBar,
-    setHideSideBar: setHideSideBar,
     webNotes: webNotes,
     setWebNotes: setWebNotes,
     setMobileView:setMobileView,
@@ -50,11 +35,28 @@ function App() {
   return (
     <NotesContext.Provider value={contextValue}>
         <div className='app'>
-          <SideBar />
-          <StartPage />
+          {mobileView ? (
+            !selectedGrp ? (
+              <SideBar />
+            ) : (
+              <TogglePage />
+            )
+          ) : (
+            !selectedGrp ? (
+              <>
+                <SideBar />
+                <StartPage />
+              </>
+            ) : (
+              <>
+                <SideBar />
+                <TogglePage />
+              </>
+            )
+          )}
         </div>
     </NotesContext.Provider>
-  )
+  );
 }
 
 export default App
